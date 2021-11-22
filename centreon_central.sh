@@ -196,7 +196,7 @@ if [[ -e centreon-clib ]] ;
   then
     echo 'File already exist !' | tee -a ${INSTALL_LOG}
   else
-    git clone -b ${CLIB_VER} https://github.com/centreon/centreon-clib 
+    git clone -b ${CLIB_VER} https://github.com/centreon/centreon-clib >> ${INSTALL_LOG}
     #wget ${CLIB_URL} -O ${DL_DIR}/centreon-clib-${CLIB_VER}.tar.gz >> ${INSTALL_LOG}
     [ $? != 0 ] && return 1
 fi
@@ -215,7 +215,8 @@ cmake \
    -DWITH_STATIC_LIB=0 \
    -DWITH_PKGCONFIG_DIR=/usr/lib/pkgconfig .. >> ${INSTALL_LOG}
 #make -j $NB_PROC  >> ${INSTALL_LOG}
-make && make install >> ${INSTALL_LOG}
+make >> ${INSTALL_LOG}
+make install >> ${INSTALL_LOG}
 
 }
 
@@ -236,7 +237,7 @@ if [[ -e centreon-connectors ]]
   then
     echo 'File already exist !' | tee -a ${INSTALL_LOG}
   else
-    git clone -b ${CONNECTOR_VER} https://github.com/centreon/centreon-connectors
+    git clone -b ${CONNECTOR_VER} https://github.com/centreon/centreon-connectors >> ${INSTALL_LOG}
     #wget ${CONNECTOR_URL} -O ${DL_DIR}/centreon-connectors-${CONNECTOR_VER}.tar.gz >> ${INSTALL_LOG}
     [ $? != 0 ] && return 1
 fi
@@ -248,9 +249,9 @@ cd build
 
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation" | tee -a ${INSTALL_LOG}
 
-conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
+#conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
 
-#conan install --build=fmt --build=gtest --build=spdlog .. >> ${INSTALL_LOG}
+conan install --build=fmt --build=gtest --build=spdlog .. >> ${INSTALL_LOG}
 
 cmake \
  -DWITH_PREFIX=/usr  \
@@ -258,8 +259,8 @@ cmake \
  -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include \
  -DWITH_TESTING=0 .. >> ${INSTALL_LOG}
 #make -j $NB_PROC  >> ${INSTALL_LOG}
-make && make install >> ${INSTALL_LOG}
-
+make >> ${INSTALL_LOG}
+make install >> ${INSTALL_LOG}
 
 }
 
