@@ -232,20 +232,23 @@ apt-get install -y libperl-dev libssh2-1-dev libgcrypt-dev >> ${INSTALL_LOG}
 /usr/local/bin/conan remote add centreon https://api.bintray.com/conan/centreon/centreon >> ${INSTALL_LOG}
 
 cd ${DL_DIR}
-if [[ -e centreon-connectors-${CONNECTOR_VER}.tar.gz ]]
+if [[ -e centreon-connectors ]]
   then
     echo 'File already exist !' | tee -a ${INSTALL_LOG}
   else
-    wget ${CONNECTOR_URL} -O ${DL_DIR}/centreon-connectors-${CONNECTOR_VER}.tar.gz >> ${INSTALL_LOG}
+    git clone -b ${CONNECTOR_VER} https://github.com/centreon/centreon-connectors
+    #wget ${CONNECTOR_URL} -O ${DL_DIR}/centreon-connectors-${CONNECTOR_VER}.tar.gz >> ${INSTALL_LOG}
     [ $? != 0 ] && return 1
 fi
 
-tar xzf centreon-connectors-${CONNECTOR_VER}.tar.gz
-cd ${DL_DIR}/centreon-connectors-${CONNECTOR_VER}
+#tar xzf centreon-connectors-${CONNECTOR_VER}.tar.gz
+cd ${DL_DIR}/centreon-connectors
 mkdir build
 cd build
 
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation" | tee -a ${INSTALL_LOG}
+
+conan install .. -s compiler.libcxx=libstdc++11 --build=missing
 
 conan install --build=fmt --build=gtest --build=spdlog .. >> ${INSTALL_LOG}
 
@@ -290,18 +293,21 @@ apt-get install -y libcgsi-gsoap-dev zlib1g-dev libssl-dev libxerces-c-dev >> ${
 apt-get clean >> ${INSTALL_LOG}
 
 cd ${DL_DIR}
-if [[ -e centreon-engine-${ENGINE_VER}.tar.gz ]]
+if [[ -e centreon-engine ]]
   then
     echo 'File already exist !' | tee -a ${INSTALL_LOG}
   else
-    wget ${ENGINE_URL} -O ${DL_DIR}/centreon-engine-${ENGINE_VER}.tar.gz >> ${INSTALL_LOG}
+    git clone -b ${ENGINE_VER} https://github.com/centreon/centreon-engine
+    #wget ${ENGINE_URL} -O ${DL_DIR}/centreon-engine-${ENGINE_VER}.tar.gz >> ${INSTALL_LOG}
     [ $? != 0 ] && return 1
 fi
 
-tar xzf centreon-engine-${ENGINE_VER}.tar.gz
-cd ${DL_DIR}/centreon-engine-${ENGINE_VER}
+#tar xzf centreon-engine-${ENGINE_VER}.tar.gz
+cd ${DL_DIR}/centreon-engine
 mkdir build
-sed -i -e "s/fmt\/6.2.0/fmt\/6.2.0\nopenssl\/1.0.2t\n\n[options]\nopenssl:no_asm=True/g" ${DL_DIR}/centreon-engine-${ENGINE_VER}/conanfile.txt
+sed -i -e "s/fmt\/6.2.0/fmt\/6.2.0\nopenssl\/1.0.2t\n\n[options]\nopenssl:no_asm=True/g" ${DL_DIR}/centreon-engine/conanfile.txt
+
+conan install .. -s compiler.libcxx=libstdc++11 --build=missing
 
 cd build
 
@@ -450,22 +456,25 @@ apt-get install git librrd-dev libmariadb-dev libgnutls28-dev lsb-release liblua
 apt-get clean >> ${INSTALL_LOG}
 
 cd ${DL_DIR}
-if [[ -e centreon-broker-${BROKER_VER}.tar.gz ]]
+if [[ -e centreon-broker ]]
   then
     echo 'File already exist !' | tee -a ${INSTALL_LOG}
   else
-    wget ${BROKER_URL} -O ${DL_DIR}/centreon-broker-${BROKER_VER}.tar.gz >> ${INSTALL_LOG}
+    git clone -b ${BROKER_VER} https://github.com/centreon/centreon-broker
+    #wget ${BROKER_URL} -O ${DL_DIR}/centreon-broker-${BROKER_VER}.tar.gz >> ${INSTALL_LOG}
     [ $? != 0 ] && return 1
 fi
 
-tar xzf centreon-broker-${BROKER_VER}.tar.gz
-cd ${DL_DIR}/centreon-broker-${BROKER_VER}
+#tar xzf centreon-broker-${BROKER_VER}.tar.gz
+cd ${DL_DIR}/centreon-broker
 sed -i -e "s/grpc\/1.25.0@inexorgame\/stable/grpc\/1.25.0@inexorgame\/stable\nopenssl\/1.0.2t\n\n[options]\nopenssl:no_asm=True/g" ${DL_DIR}/centreon-broker-${BROKER_VER}/conanfile.txt
 
 mkdir build
 cd build
 
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation broker" | tee -a ${INSTALL_LOG}
+
+conan install .. -s compiler.libcxx=libstdc++11 --build=missing
 
 CXXFLAGS=-latomic /usr/local/bin/conan install --build=grpc --build=fmt --build=missing .. >> ${INSTALL_LOG}
 
