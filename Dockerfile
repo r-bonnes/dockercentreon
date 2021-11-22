@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN echo "deb http://ftp.fr.debian.org/debian/ buster main contrib non-free" >> /etc/apt/sources.list
 
 RUN apt-get update
-RUN apt-get install -y apt-utils
+RUN apt-get install -y apt-utils iproute2
 RUN apt-get install -y systemd git gpg wget curl
 
 RUN rm -f /lib/systemd/system/multi-user.target.wants/* \
