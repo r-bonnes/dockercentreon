@@ -237,16 +237,17 @@ local MAJOUR=$1
 apt-get install -y wget cmake python3-pip >> ${INSTALL_LOG}
 
 cd ${DL_DIR}
-if [[ -e centreon-clib-${CLIB_VER}.tar.gz ]] 
+if [[ -e centreon-clib]] 
   then
     echo 'File already exist !' | tee -a ${INSTALL_LOG}
   else
-    wget ${CLIB_URL} -O ${DL_DIR}/centreon-clib-${CLIB_VER[0]}.tar.gz >> ${INSTALL_LOG}
+    git clone -b ${CLIB_VER[0]} https://github.com/centreon/centreon-clib
+    #wget ${CLIB_URL} -O ${DL_DIR}/centreon-clib-${CLIB_VER[0]}.tar.gz >> ${INSTALL_LOG}
     [ $? != 0 ] && return 1
 fi
 
-tar xzf centreon-clib-${CLIB_VER[0]}.tar.gz
-cd centreon-clib-${CLIB_VER[0]}
+#tar xzf centreon-clib-${CLIB_VER[0]}.tar.gz
+cd centreon-clib
 mkdir build
 cd build
 
