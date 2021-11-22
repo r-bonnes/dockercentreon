@@ -188,7 +188,7 @@ function clib_install () {
 " | tee -a ${INSTALL_LOG}
 local MAJOUR=$1
 
-apt-get install -y wget cmake python3-pip >> ${INSTALL_LOG}
+apt-get install -y wget cmake python3-pip git >> ${INSTALL_LOG}
 
 cd ${DL_DIR}
 
@@ -214,8 +214,8 @@ cmake \
    -DWITH_SHARED_LIB=1 \
    -DWITH_STATIC_LIB=0 \
    -DWITH_PKGCONFIG_DIR=/usr/lib/pkgconfig .. >> ${INSTALL_LOG}
-make -j $NB_PROC  >> ${INSTALL_LOG}
-make install >> ${INSTALL_LOG}
+#make -j $NB_PROC  >> ${INSTALL_LOG}
+make && make install >> ${INSTALL_LOG}
 
 }
 
@@ -257,8 +257,8 @@ cmake \
  -DWITH_PREFIX_BINARY=/usr/lib/centreon-connector  \
  -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include \
  -DWITH_TESTING=0 .. >> ${INSTALL_LOG}
-make -j $NB_PROC  >> ${INSTALL_LOG}
-make install >> ${INSTALL_LOG}
+#make -j $NB_PROC  >> ${INSTALL_LOG}
+make && make install >> ${INSTALL_LOG}
 
 
 }
