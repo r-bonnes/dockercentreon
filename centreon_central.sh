@@ -249,7 +249,7 @@ cd build
 
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation" | tee -a ${INSTALL_LOG}
 
-#conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
+conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
 
 conan install --build=fmt --build=gtest --build=spdlog .. >> ${INSTALL_LOG}
 
