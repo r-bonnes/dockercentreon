@@ -170,11 +170,11 @@ EOF
 	systemctl restart mysql >> ${INSTALL_LOG}
 
 	# Change MySQL Server authentication plugin for root user
-	/usr/bin/mysql <<EOF
-use mysql;
-update user set plugin='' where user='root';
-flush privileges;
-EOF
+#	/usr/bin/mysql <<EOF
+#use mysql;
+#update user set plugin='' where user='root';
+#flush privileges;
+#EOF
 
 fi
 
