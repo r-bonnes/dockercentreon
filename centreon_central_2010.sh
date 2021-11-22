@@ -272,7 +272,7 @@ function centreon_connectors_install () {
 " | tee -a ${INSTALL_LOG}
 local MAJOUR=$1
 
-apt-get install -y libperl-dev libssh2-1-dev libgcrypt-dev >> ${INSTALL_LOG}
+apt-get install -y pkg-config libperl-dev libssh2-1-dev libgcrypt-dev >> ${INSTALL_LOG}
 /usr/bin/pip3 install conan >> ${INSTALL_LOG}
 /usr/local/bin/conan remote add centreon https://api.bintray.com/conan/centreon/centreon >> ${INSTALL_LOG}
 
