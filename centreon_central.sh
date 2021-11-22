@@ -229,7 +229,7 @@ local MAJOUR=$1
 
 apt-get install -y libperl-dev libssh2-1-dev libgcrypt-dev >> ${INSTALL_LOG}
 /usr/bin/pip3 install conan >> ${INSTALL_LOG}
-/usr/local/bin/conan remote add centreon https://api.bintray.com/conan/centreon/centreon >> ${INSTALL_LOG}
+#/usr/local/bin/conan remote add centreon https://api.bintray.com/conan/centreon/centreon >> ${INSTALL_LOG}
 
 cd ${DL_DIR}
 if [[ -e centreon-connectors ]]
@@ -248,9 +248,9 @@ cd build
 
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation" | tee -a ${INSTALL_LOG}
 
-conan install .. -s compiler.libcxx=libstdc++11 --build=missing
+conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
 
-conan install --build=fmt --build=gtest --build=spdlog .. >> ${INSTALL_LOG}
+#conan install --build=fmt --build=gtest --build=spdlog .. >> ${INSTALL_LOG}
 
 cmake \
  -DWITH_PREFIX=/usr  \
@@ -305,15 +305,15 @@ fi
 #tar xzf centreon-engine-${ENGINE_VER}.tar.gz
 cd ${DL_DIR}/centreon-engine
 mkdir build
-sed -i -e "s/fmt\/6.2.0/fmt\/6.2.0\nopenssl\/1.0.2t\n\n[options]\nopenssl:no_asm=True/g" ${DL_DIR}/centreon-engine/conanfile.txt
-
-conan install .. -s compiler.libcxx=libstdc++11 --build=missing
+#sed -i -e "s/fmt\/6.2.0/fmt\/6.2.0\nopenssl\/1.0.2t\n\n[options]\nopenssl:no_asm=True/g" ${DL_DIR}/centreon-engine/conanfile.txt
 
 cd build
 
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation" | tee -a ${INSTALL_LOG}
 
-CXXFLAGS=-latomic /usr/local/bin/conan install --build=grpc --build=fmt --build=missing .. >> ${INSTALL_LOG}
+conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
+
+#CXXFLAGS=-latomic /usr/local/bin/conan install --build=grpc --build=fmt --build=missing .. >> ${INSTALL_LOG}
 
 cmake \
    -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include \
