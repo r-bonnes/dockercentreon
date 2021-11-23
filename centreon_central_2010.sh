@@ -279,28 +279,28 @@ conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/
 conan config set general.revisions_enabled=1
 
 cd ${DL_DIR}
-if [[ -e centreon-connectors-${CONNECTOR_VER[0]}.tar.gz ]]
+if [[ -e centreon-connectors ]]
   then
     echo 'File already exist !' | tee -a ${INSTALL_LOG}
   else
-    wget ${CONNECTOR_URL} -O ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}.tar.gz >> ${INSTALL_LOG}
+    git clone -b ${CONNECTOR_VER[0]} https://github.com/centreon/centreon-connectors
+    #wget ${CONNECTOR_URL} -O ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}.tar.gz >> ${INSTALL_LOG}
     [ $? != 0 ] && return 1
 fi
 
-tar xzf centreon-connectors-${CONNECTOR_VER[0]}.tar.gz
-cd ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}
+#tar xzf centreon-connectors-${CONNECTOR_VER[0]}.tar.gz
+cd ${DL_DIR}/centreon-connectors
 mkdir build
 cd build
 
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation" | tee -a ${INSTALL_LOG}
 
+sed -i 's/spdlog\/1.4.2/spdlog\/1.9.2/g' ${DL_DIR}/centreon-connectors/conanfile.txt
+
 /usr/local/bin/conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
 /usr/local/bin/conan profile update settings.compiler.libcxx=libstdc++11 default >> ${INSTALL_LOG}
 
-sed -i 's/--remote centreon/--remote bincrafters/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/cmake.sh >> ${INSTALL_LOG}
-
-pip3 install conan --upgrade >> ${INSTALL_LOG}
-/usr/local/bin/conan install spdlog/1.9.2@ >> ${INSTALL_LOG}
+sed -i 's/--remote centreon/--remote bincrafters/g' ${DL_DIR}/centreon-connectors/cmake.sh >> ${INSTALL_LOG}
 
 cmake \
  -DWITH_PREFIX=/usr  \
@@ -308,7 +308,6 @@ cmake \
  -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include \
  -DWITH_TESTING=0 .. >> ${INSTALL_LOG}
 make -j $NB_PROC >> ${INSTALL_LOG}
-sed -i 's/spdlog\/1.4.2/spdlog\/1.9.2/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/conanfile.txt
 make install >> ${INSTALL_LOG}
 
 }
