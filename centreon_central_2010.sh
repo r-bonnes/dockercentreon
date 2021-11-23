@@ -293,7 +293,7 @@ cd build
 
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation" | tee -a ${INSTALL_LOG}
 
-/usr/local/bin/conan install .. >> ${INSTALL_LOG}
+/usr/local/bin/conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
 
 cmake \
  -DWITH_PREFIX=/usr  \
