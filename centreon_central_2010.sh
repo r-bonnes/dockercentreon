@@ -295,7 +295,7 @@ cd build
 
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation" | tee -a ${INSTALL_LOG}
 
-sed -i 's/spdlog\/1.4.2/spdlog\/1.9.2/g' ${DL_DIR}/centreon-connectors/conanfile.txt
+sed -i 's/spdlog\/1.4.2@bincrafters\/stable/spdlog\/1.9.2/g' ${DL_DIR}/centreon-connectors/conanfile.txt
 
 /usr/local/bin/conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
 /usr/local/bin/conan profile update settings.compiler.libcxx=libstdc++11 default >> ${INSTALL_LOG}
