@@ -298,6 +298,8 @@ cd build
 
 conan profile update settings.compiler.libcxx=libstdc++11 default
 
+apt-get install -y libspdlog-dev
+
 sed -i 's/--remote centreon/--remote bincrafters/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/cmake.sh
 sed -i 's/spdlog\/1.4.2/spdlog\/1.9.2/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/conanfile.txt
 
