@@ -276,7 +276,7 @@ local MAJOUR=$1
 apt-get install -y pkg-config libperl-dev libssh2-1-dev libgcrypt-dev >> ${INSTALL_LOG}
 /usr/bin/pip install conan >> ${INSTALL_LOG}
 conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
-general.revisions_enabled = 1
+conan config set general.revisions_enabled=1
 
 cd ${DL_DIR}
 if [[ -e centreon-connectors-${CONNECTOR_VER[0]}.tar.gz ]]
