@@ -300,6 +300,8 @@ conan profile update settings.compiler.libcxx=libstdc++11 default >> ${INSTALL_L
 
 sed -i 's/--remote centreon/--remote bincrafters/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/cmake.sh >> ${INSTALL_LOG}
 
+pip install conan --upgrade >> ${INSTALL_LOG}
+conan install spdlog/1.4.2@ >> ${INSTALL_LOG}
 
 cmake \
  -DWITH_PREFIX=/usr  \
