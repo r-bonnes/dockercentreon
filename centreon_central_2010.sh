@@ -296,15 +296,7 @@ cd build
 
 /usr/local/bin/conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
 
-pwd >> ${INSTALL_LOG}
-pwd >> ${INSTALL_LOG}
-pwd >> ${INSTALL_LOG}
-pwd >> ${INSTALL_LOG}
-pwd >> ${INSTALL_LOG}
-pwd >> ${INSTALL_LOG}
-pwd >> ${INSTALL_LOG}
-pwd >> ${INSTALL_LOG}
-
+conan profile update settings.compiler.libcxx=libstdc++11 default
 
 sed -i 's/--remote centreon/--remote bincrafters/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/cmake.sh
 
