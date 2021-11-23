@@ -306,7 +306,7 @@ pwd >> ${INSTALL_LOG}
 pwd >> ${INSTALL_LOG}
 
 
-#sed -i 's/--remote centreon/--remote bincrafters/g' cmake.sh
+sed -i 's/--remote centreon/--remote bincrafters/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/cmake.sh
 
 cmake \
  -DWITH_PREFIX=/usr  \
