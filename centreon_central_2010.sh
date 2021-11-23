@@ -294,17 +294,12 @@ cd build
 
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation" | tee -a ${INSTALL_LOG}
 
-
-/usr/local/bin/conan profile new default 
-
 /usr/local/bin/conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
-
-
 /usr/local/bin/conan profile update settings.compiler.libcxx=libstdc++11 default >> ${INSTALL_LOG}
 
 sed -i 's/--remote centreon/--remote bincrafters/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/cmake.sh >> ${INSTALL_LOG}
 
-pip install conan --upgrade >> ${INSTALL_LOG}
+pip3 install conan --upgrade >> ${INSTALL_LOG}
 /usr/local/bin/conan install spdlog/1.9.2@ >> ${INSTALL_LOG}
 
 cmake \
