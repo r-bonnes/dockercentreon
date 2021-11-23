@@ -274,7 +274,7 @@ function centreon_connectors_install () {
 local MAJOUR=$1
 
 apt-get install -y pkg-config libperl-dev libssh2-1-dev libgcrypt-dev >> ${INSTALL_LOG}
-/usr/bin/pip install conan >> ${INSTALL_LOG}
+/usr/bin/pip3 install conan >> ${INSTALL_LOG}
 conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
 conan config set general.revisions_enabled=1
 
@@ -296,12 +296,10 @@ cd build
 
 /usr/local/bin/conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
 
-conan profile update settings.compiler.libcxx=libstdc++11 default
+conan profile update settings.compiler.libcxx=libstdc++11 default >> ${INSTALL_LOG}
 
-apt-get install -y libspdlog-dev
+sed -i 's/--remote centreon/--remote bincrafters/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/cmake.sh >> ${INSTALL_LOG}
 
-sed -i 's/--remote centreon/--remote bincrafters/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/cmake.sh
-sed -i 's/spdlog\/1.4.2/spdlog\/1.9.2/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/conanfile.txt
 
 cmake \
  -DWITH_PREFIX=/usr  \
@@ -309,6 +307,7 @@ cmake \
  -DWITH_CENTREON_CLIB_INCLUDE_DIR=/usr/include \
  -DWITH_TESTING=0 .. >> ${INSTALL_LOG}
 make -j $NB_PROC >> ${INSTALL_LOG}
+sed -i 's/spdlog\/1.4.2/spdlog\/1.9.2/g' ${DL_DIR}/centreon-connectors-${CONNECTOR_VER[0]}/conanfile.txt
 make install >> ${INSTALL_LOG}
 
 }
