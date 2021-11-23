@@ -274,8 +274,8 @@ function centreon_connectors_install () {
 local MAJOUR=$1
 
 apt-get install -y pkg-config libperl-dev libssh2-1-dev libgcrypt-dev >> ${INSTALL_LOG}
-/usr/bin/pip3 install conan >> ${INSTALL_LOG}
-/usr/local/bin/conan remote add centreon https://api.bintray.com/conan/centreon/centreon >> ${INSTALL_LOG}
+/usr/bin/pip install conan >> ${INSTALL_LOG}
+conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
 
 cd ${DL_DIR}
 if [[ -e centreon-connectors-${CONNECTOR_VER[0]}.tar.gz ]]
@@ -294,6 +294,8 @@ cd build
 [ "$SCRIPT_VERBOSE" = true ] && echo "====> Compilation" | tee -a ${INSTALL_LOG}
 
 /usr/local/bin/conan install .. -s compiler.libcxx=libstdc++11 --build=missing >> ${INSTALL_LOG}
+
+sed -i 's/--remote centreon/--remote bincrafters/g' cmake.sh
 
 cmake \
  -DWITH_PREFIX=/usr  \
